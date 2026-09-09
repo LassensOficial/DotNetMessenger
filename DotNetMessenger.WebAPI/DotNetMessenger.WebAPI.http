@@ -1,0 +1,6 @@
+@DotNetMessenger.WebAPI_HostAddress = http://localhost:5166
+
+GET {{DotNetMessenger.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
