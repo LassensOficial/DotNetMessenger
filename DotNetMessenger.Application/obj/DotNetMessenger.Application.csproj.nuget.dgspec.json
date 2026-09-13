@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\User\\src\\DotNetMessenger\\DotNetMessenger.Application\\DotNetMessenger.Application.csproj": {}
+    "C:\\Users\\User\\src\\DotNetMessenger\\DotNetMessenger.Application\\DotNetMessenger.Application.csproj": {}
   },
   "projects": {
-    "c:\\Users\\User\\src\\DotNetMessenger\\DotNetMessenger.Application\\DotNetMessenger.Application.csproj": {
+    "C:\\Users\\User\\src\\DotNetMessenger\\DotNetMessenger.Application\\DotNetMessenger.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\User\\src\\DotNetMessenger\\DotNetMessenger.Application\\DotNetMessenger.Application.csproj",
+        "projectUniqueName": "C:\\Users\\User\\src\\DotNetMessenger\\DotNetMessenger.Application\\DotNetMessenger.Application.csproj",
         "projectName": "DotNetMessenger.Application",
-        "projectPath": "c:\\Users\\User\\src\\DotNetMessenger\\DotNetMessenger.Application\\DotNetMessenger.Application.csproj",
+        "projectPath": "C:\\Users\\User\\src\\DotNetMessenger\\DotNetMessenger.Application\\DotNetMessenger.Application.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\User\\src\\DotNetMessenger\\DotNetMessenger.Application\\obj\\",
+        "outputPath": "C:\\Users\\User\\src\\DotNetMessenger\\DotNetMessenger.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"

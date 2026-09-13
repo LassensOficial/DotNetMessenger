@@ -1,0 +1,61 @@
+## ======= Результаты сборки и компиляции (Build outputs) =======
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Re]leases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bbin/
+bin/
+obj/
+/build/
+
+## ======= Файлы Visual Studio =======
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## ======= Файлы JetBrains Rider / IntelliJ =======
+.idea/
+*.sln.iml
+
+## ======= Файлы Visual Studio Code =======
+.vscode/
+!/.vscode/extensions.json
+!/.vscode/launch.json
+!/.vscode/tasks.json
+!/.vscode/settings.json
+
+## ======= Локальные настройки и Секреты (Secrets) =======
+# Исключаем файлы настроек, которые могут содержать пароли и токены
+# Примечание: базовые appsettings.json и appsettings.Development.json ДОЛЖНЫ остаться в репозитории
+appsettings.local.json
+appsettings.Production.json
+*.usersecrets
+
+## ======= Тесты и Покрытие кода (Testing) =======
+TestResults/
+*.tmproj
+/GeneratedReports/
+*.pfx
+*.publishsettings
+
+## ======= Файлы пакетов (Package Restore) =======
+*.nuget.exe
+*.nuget.targets
+# Папка packages исключается, так как NuGet восстанавливает её автоматически
+packages/
+!packages/repositories.config
+project.lock.json
+project.fragment.lock.json
+clippy.json
+
+## ======= Логи и Временные файлы =======
+*.log
+*.log.*
+*.cache
+*.tmp
