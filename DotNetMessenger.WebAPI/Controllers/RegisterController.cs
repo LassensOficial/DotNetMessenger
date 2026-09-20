@@ -6,20 +6,20 @@ namespace DotNetMessenger.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class RegistrationController(ISender sender) : ControllerBase
+public class RegisterController(ISender sender) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Register(
         [FromBody] RegisterUserRequest request,
         CancellationToken cancellationToken)
     {
-        await sender.Send(new RegisterUserCommand
-        {
-            Name = request.Name,
-            Password = request.Password
-        }, cancellationToken);
+        int userId = await sender.Send(new RegisterUserCommand
+        (
+            request.Name,
+            request.Password
+        ), cancellationToken);
 
-        return Ok();
+        return Ok(userId);
     }
 }
 
