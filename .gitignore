@@ -79,11 +79,11 @@ _ReSharper*/
 *.DotSettings.user
 
 ## ======= Файлы Visual Studio Code =======
-.vscode/
-!/.vscode/extensions.json
-!/.vscode/launch.json
-!/.vscode/tasks.json
-!/.vscode/settings.json
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/settings.json
 
 ## ======= Локальные настройки и Секреты (Secrets) =======
 # Исключаем файлы настроек, которые могут содержать пароли и токены
