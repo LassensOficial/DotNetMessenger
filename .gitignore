@@ -2,15 +2,21 @@
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
-[Re]leases/
+[Rr]eleases/
 x64/
 x86/
+[Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
-bbin/
-bin/
-obj/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+artifacts/
 /build/
+publish/
+PublishScripts/
 
 ## ======= Файлы Visual Studio =======
 .vs/
@@ -18,10 +24,59 @@ obj/
 *.user
 *.userosscache
 *.sln.docstates
+*.rsuser
+*.userprefs
+*.VC.db
+*.VC.VC.opendb
+*.opendb
+*.opensdf
+*.sdf
+*.ncb
+*.aps
+ipch/
+*.psess
+*.vsp
+*.vspx
+*.sap
+*.gpState
+*.[Cc]ache
+!*.[Cc]ache/
 
-## ======= Файлы JetBrains Rider / IntelliJ =======
+## ======= Промежуточные файлы MSBuild / компилятора =======
+*.obj
+*.iobj
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.ilk
+*.meta
+*.pch
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tlog
+*.idb
+*.log
+*.log.*
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+## ======= Файлы JetBrains Rider / IntelliJ / ReSharper =======
 .idea/
 *.sln.iml
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
 
 ## ======= Файлы Visual Studio Code =======
 .vscode/
@@ -36,26 +91,57 @@ obj/
 appsettings.local.json
 appsettings.Production.json
 *.usersecrets
+secrets.json
 
 ## ======= Тесты и Покрытие кода (Testing) =======
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
 TestResults/
+TestResult.xml
+nunit-*.xml
+*.VisualState.xml
 *.tmproj
 /GeneratedReports/
-*.pfx
-*.publishsettings
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+coverage*.info
+*.dotCover
+BenchmarkDotNet.Artifacts/
 
 ## ======= Файлы пакетов (Package Restore) =======
-*.nuget.exe
+*.nupkg
+*.snupkg
+*.nuget.props
 *.nuget.targets
+*.nuget.exe
 # Папка packages исключается, так как NuGet восстанавливает её автоматически
-packages/
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
 !packages/repositories.config
 project.lock.json
 project.fragment.lock.json
 clippy.json
 
-## ======= Логи и Временные файлы =======
-*.log
-*.log.*
-*.cache
-*.tmp
+## ======= Публикация и ClickOnce =======
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+*.publishsettings
+*.pfx
+AppPackages/
+BundleArtifacts/
+PublishOutput/
+
+## ======= Локальная история и служебные файлы ОС =======
+.localhistory/
+.ionide/
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+*~
+~$*
