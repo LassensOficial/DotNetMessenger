@@ -4,3 +4,13 @@ GET {{DotNetMessenger.WebAPI_HostAddress}}/api/users
 Accept: application/json
 
 ###
+
+POST {{DotNetMessenger.WebAPI_HostAddress}}/api/registration
+Content-Type: application/json
+
+{
+  "name": "alice",
+  "password": "secret"
+}
+
+###

@@ -2,6 +2,26 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "stop-api",
+      "type": "shell",
+      "command": "Get-Process -Name 'DotNetMessenger.WebAPI' -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue; foreach ($port in 5166,7204) { Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue | ForEach-Object { if ($_.OwningProcess -gt 0) { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue } } }",
+      "windows": {
+        "options": {
+          "shell": {
+            "executable": "powershell.exe",
+            "args": ["-NoProfile", "-Command"]
+          }
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": false
+      }
+    },
+    {
       "label": "build",
       "command": "dotnet",
       "type": "process",
@@ -11,6 +31,7 @@
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary;ForceNoAlign"
       ],
+      "dependsOn": "stop-api",
       "problemMatcher": "$msCompile",
       "group": {
         "kind": "build",
@@ -34,6 +55,9 @@
       ],
       "isBackground": true,
       "dependsOn": "build",
+      "runOptions": {
+        "instanceLimit": 1
+      },
       "problemMatcher": {
         "owner": "dotnet-run",
         "pattern": {
