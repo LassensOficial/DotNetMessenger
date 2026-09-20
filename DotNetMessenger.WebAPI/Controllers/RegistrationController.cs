@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using MediatR;
+using DotNetMessenger.Application.Commands;
 
 namespace DotNetMessenger.WebAPI.Controllers;
 
@@ -6,11 +8,18 @@ namespace DotNetMessenger.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class RegistrationController : ControllerBase
 {
+    private ISender _mediatR;
+
     [HttpPost]
-    public IActionResult Register([FromBody] RegisterUserRequest request)
+    public async Task<IActionResult> Register([FromBody] RegisterUserRequest request)
     {
+        await _mediatR.Send(new RegisterUserCommand()
+        {
+            Name = request.Name,
+            Password = request.Password
+        });
+
         return StatusCode(StatusCodes.Status501NotImplemented);
     }
 }
-
 public record RegisterUserRequest(string Name, string Password);
