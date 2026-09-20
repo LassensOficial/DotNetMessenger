@@ -1,28 +1,29 @@
-using DotNetMessenger.Infrastructure.Data;
+using MediatR;
 using DotNetMessenger.Application.Commands;
 using DotNetMessenger.Domain.Entities;
+using DotNetMessenger.Infrastructure.Data;
 
-class RegisterUserCommandHandler(RegisterUserCommand registerUserCommand)
+namespace DotNetMessenger.Infrastructure.CommandHandlers;
+
+public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
 {
-    public void Registration()
+    public Task Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        using (var db = new ApplicationDbContext("VPS"))
+        using var db = new ApplicationDbContext("VPS");
+        var userFound = db.Users.Where(u => u.UserName.Equals(request.Name));
+
+        if (userFound != null)
         {
-            var userFound = db.Users.Where(u => u.UserName.Equals(registerUserCommand.Name));
-
-            if (userFound != null)
+            var newUser = new User
             {
-                User newUser = new User()
-                {
-                    UserName = registerUserCommand.Name,
-                    CreatedAt = DateTime.Now
-                };
+                UserName = request.Name,
+                CreatedAt = DateTime.Now
+            };
 
-                db.Add(newUser);
-                db.SaveChanges();
-            }
-
+            db.Add(newUser);
+            db.SaveChanges();
         }
-    }
 
+        return Task.CompletedTask;
+    }
 }

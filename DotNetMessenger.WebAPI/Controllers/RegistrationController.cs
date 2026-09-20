@@ -6,20 +6,21 @@ namespace DotNetMessenger.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class RegistrationController : ControllerBase
+public class RegistrationController(ISender sender) : ControllerBase
 {
-    private ISender _mediatR;
-
     [HttpPost]
-    public async Task<IActionResult> Register([FromBody] RegisterUserRequest request)
+    public async Task<IActionResult> Register(
+        [FromBody] RegisterUserRequest request,
+        CancellationToken cancellationToken)
     {
-        await _mediatR.Send(new RegisterUserCommand()
+        await sender.Send(new RegisterUserCommand
         {
             Name = request.Name,
             Password = request.Password
-        });
+        }, cancellationToken);
 
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        return Ok();
     }
 }
+
 public record RegisterUserRequest(string Name, string Password);
