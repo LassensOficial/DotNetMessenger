@@ -1,14 +1,12 @@
 using MediatR;
+using DotNetMessenger.Domain.Entities;
 
 namespace DotNetMessenger.Application.Commands;
 
-public class RegisterUserCommand : IRequest
-{
-    public string Name { get; set; }
-    public string Password { get; set; }
-}
+public record RegisterUserCommand(string Name, string Password) : IRequest<int>
 
-public interface SqlUserRepository
+public interface ISqlUserRegister
 {
-    public Task
+    public Task<bool> ExistsUserByName(string name);
+    public Task AddAsync(User user);
 }
