@@ -3,7 +3,7 @@ using DotNetMessenger.Domain.Entities;
 
 namespace DotNetMessenger.Application.Commands;
 
-public record RegisterUserCommand(string Name, string Password) : IRequest<int>
+public record RegisterUserCommand(string Name, string Password) : IRequest<int> { }
 
 public interface ISqlUserRegister
 {
