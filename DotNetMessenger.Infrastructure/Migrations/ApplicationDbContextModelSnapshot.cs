@@ -49,9 +49,6 @@ namespace DotNetMessenger.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ChatId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Context")
                         .IsRequired()
                         .HasColumnType("text");
@@ -62,7 +59,12 @@ namespace DotNetMessenger.Infrastructure.Migrations
                     b.Property<int>("OwnerId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
@@ -78,6 +80,10 @@ namespace DotNetMessenger.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -85,6 +91,18 @@ namespace DotNetMessenger.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("DotNetMessenger.Domain.Entities.Message", b =>
+                {
+                    b.HasOne("DotNetMessenger.Domain.Entities.User", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("DotNetMessenger.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

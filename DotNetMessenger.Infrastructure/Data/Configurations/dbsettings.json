@@ -1,6 +1,6 @@
 {
   "ConnectionStrings": {
-    "Migration": "Host=138.16.183.198;Port=5432;Database=messenger_db;Username=db_user;Password= ",
-    "VPS": "Host=localhost;Port=5432;Database=messenger_db;Username=messenger_user;Password=my_super_secret_password"
+    "Migration": "Host=138.16.183.198;Port=5432;Database=messenger_db;Username=postgres;Password=my_super_secret_password!",
+    "VPS": "Host=localhost;Port=5432;Database=messenger_db;Username=postgres;Password=my_super_secret_password!"
   }
 }
