@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="DotNetMessenger.Application/DotNetMessenger.Application.csproj" />
+  <Project Path="DotNetMessenger.Domain/DotNetMessenger.Domain.csproj" />
+  <Project Path="DotNetMessenger.Infrastructure/DotNetMessenger.Infrastructure.csproj" />
+  <Project Path="DotNetMessenger.WebAPI/DotNetMessenger.WebAPI.csproj" />
+</Solution>
