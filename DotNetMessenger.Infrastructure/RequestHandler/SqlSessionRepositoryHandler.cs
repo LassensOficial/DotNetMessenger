@@ -1,7 +1,7 @@
 using DotNetMessenger.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-public class SessionRepositoryHandler : ISessionRepository
+public class SqlSessionRepositoryHandler : ISessionRepository
 {
     public async Task<bool> ExistsSessionKey(string key)
     {
