@@ -12,6 +12,8 @@ public class SessionKey : ISessionKeyCreate
 
         while (exists)
         {
+            key = "";
+            
             for (int i = 0; i < 64; i++)
             {
                 key += _symbols[Random.Shared.Next(0, 51)];

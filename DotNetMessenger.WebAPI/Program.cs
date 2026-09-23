@@ -6,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<ISqlUserLogin, SqlLoginUserRequestHandler>();
 builder.Services.AddScoped<ISqlUserRegister, SqlRegisterUserRequestHandler>();
+builder.Services.AddScoped<ISessionKeyCreate, SessionKey>();
+builder.Services.AddScoped<ISessionRepository, SessionRepositoryHandler>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
