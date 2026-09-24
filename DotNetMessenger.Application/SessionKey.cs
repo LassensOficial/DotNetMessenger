@@ -1,8 +1,7 @@
 using DotNetMessenger.Application.CommandsHandler;
 
-public class SessionKey : ISessionKeyCreate
+public class SessionKey(ISessionRepository sessionRepository) : ISessionKeyCreate
 {
-    private ISessionRepository _sessionRepository;
     private string _symbols = "QWERTYUIOPASDFGHJKLZXCVBNM123456789!@#$%^&*()_+,.{}";
 
     public async Task<string> CreateSessionKey()
@@ -19,15 +18,10 @@ public class SessionKey : ISessionKeyCreate
                 key += _symbols[Random.Shared.Next(0, 51)];
             }
 
-            exists = await _sessionRepository.ExistsSessionKey(key);
+            exists = await sessionRepository.ExistsSessionKey(key);
         }
 
         return key;
-    }
-
-    public SessionKey(ISessionRepository sessionRepository)
-    {
-        _sessionRepository = sessionRepository;
     }
 }
 
