@@ -8,17 +8,14 @@ builder.Services.AddScoped<ISqlUserLogin, SqlLoginUserRequestHandler>();
 builder.Services.AddScoped<ISqlUserRegister, SqlRegisterUserRequestHandler>();
 builder.Services.AddScoped<ISessionKeyCreate, SessionKey>();
 builder.Services.AddScoped<ISessionRepository, SqlSessionRepositoryHandler>();
+builder.Services.AddScoped<IChatsRepository, SqlChatsRepositoryRequestHandler>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg =>
 {
-    cfg.RegisterServicesFromAssemblyContaining<RegisterUserCommand>();
-    cfg.RegisterServicesFromAssemblyContaining<RegisterUserCommandHandler>();
-
-    cfg.RegisterServicesFromAssemblyContaining<LoginUserCommand>();
-    cfg.RegisterServicesFromAssemblyContaining<LoginUserCommandHandler>();
+    cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly);
 });
 
 var app = builder.Build();
