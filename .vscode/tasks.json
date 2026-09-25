@@ -66,6 +66,69 @@
         "panel": "dedicated",
         "focus": false
       }
+    },
+    {
+      "label": "stop-blazor",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-Command",
+        "$conns = Get-NetTCPConnection -LocalPort 5269 -State Listen -ErrorAction SilentlyContinue; foreach ($c in $conns) { Stop-Process -Id $c.OwningProcess -Force -ErrorAction SilentlyContinue }; exit 0"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared",
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "build-blazor",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/DotNetMessenger.BlazorClient/DotNetMessenger.BlazorClient.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary;ForceNoAlign"
+      ],
+      "dependsOn": "stop-blazor",
+      "problemMatcher": "$msCompile",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "run-blazor",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/DotNetMessenger.BlazorClient/DotNetMessenger.BlazorClient.csproj",
+        "--launch-profile",
+        "http"
+      ],
+      "isBackground": true,
+      "dependsOn": "build-blazor",
+      "problemMatcher": {
+        "owner": "dotnet-run-blazor",
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "Now listening on:"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": false
+      }
     }
   ]
 }
