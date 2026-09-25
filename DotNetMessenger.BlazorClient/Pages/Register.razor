@@ -1,9 +1,10 @@
-@page "/auth"
+@page "/register"
 
+@inject NavigationManager NavigationManager
 @inject HttpClient httpClient
 
 <h1>
-    Salam!
+    Зарегестрируйтесь.
 </h1>
 
 <div class="mb-2">
@@ -16,9 +17,17 @@
     <input class="form-control" @bind="Password"/>
 </div>
 
-<button @onclick="SendMessageAsync">
-    Отправить 
-</button>
+<div>
+    <button @onclick="SendMessageAsync">
+        Отправить
+    </button>
+</div>
+
+<div>
+    <button @onclick="LoginAsync">
+        Уже есть аккаунт? Войти
+    </button>
+</div>
 
 <h2>
     @(Notification != null ? Notification : string.Empty)
@@ -42,7 +51,7 @@
         );
         try
         {
-            var response = await httpClient.PostAsJsonAsync("http://locallhost:5432/api/Register", request);
+            var response = await httpClient.PostAsJsonAsync("http://localhost:5432/api/Register", request);
 
             response.EnsureSuccessStatusCode();
 
@@ -52,6 +61,12 @@
         {
             Notification = $"Ошибка : {ex.Message}";
         }
+    }
+
+    private async Task LoginAsync()
+    {
+        Console.WriteLine("LOGIN");
+        NavigationManager.NavigateTo("login");
     }
 
     private record RequestRegister(string Name, string Password);

@@ -1,0 +1,58 @@
+@page "/login"
+
+@inject HttpClient httpClient
+
+<h1>
+    Войдите в аккаунт.
+</h1>
+
+<div class="mb-2">
+    <label class="form-label">Имя</label>
+    <input class="form-control" @bind="Name" />
+</div>
+
+<div class="mb-2">
+    <label class="form-label">Пароль</label>
+    <input class="form-control" @bind="Password" />
+</div>
+
+<button @onclick="SendMessageAsync">
+    Отправить
+</button>
+
+<h2>
+    @(Notification != null ? Notification : string.Empty)
+</h2>
+
+
+@code
+{
+    private string Name {get;set;}
+    private string Password {get;set;}
+
+    private string Notification {get;set;}
+
+    private async Task SendMessageAsync()
+    {
+
+        var request = new RequestRegister
+        (
+            Name = this.Name,
+            Password = this.Password
+        );
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync("http://localhost:5432/api/Login", request);
+
+            response.EnsureSuccessStatusCode();
+
+            Notification = "sended successful";
+        }
+        catch(Exception ex)
+        {
+            Notification = $"Ошибка : {ex.Message}";
+        }
+    }
+
+    private record RequestRegister(string Name, string Password);
+}
