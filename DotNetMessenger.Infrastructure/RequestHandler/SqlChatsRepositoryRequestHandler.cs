@@ -3,8 +3,9 @@ using DotNetMessenger.Domain.Entities;
 using DotNetMessenger.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-public class SqlChatsRepositoryRequestHandler : IChatsRepository
+public class SqlChatsRepositoryRequestHandler(ApplicationDbContext db) : IChatsRepository
 {
+
     public async Task<List<Chat>> GetChats(string key)
     {
         List<int> chatsId = new List<int>();
@@ -13,14 +14,10 @@ public class SqlChatsRepositoryRequestHandler : IChatsRepository
 
         List<Message> messages = new List<Message>();
 
-        using (var db = new ApplicationDbContext("VPS"))
-        {
-            chatsId = await db.Users.Where(u => u.SessionKey == key).SelectMany(u => u.ChatsId).ToListAsync();
-            userChats = await db.Chats.Where(c => chatsId.Contains(c.Id)).ToListAsync();
+        chatsId = await db.Users.Where(u => u.SessionKey == key).SelectMany(u => u.ChatsId).ToListAsync();
+        userChats = await db.Chats.Where(c => chatsId.Contains(c.Id)).ToListAsync();
+        messages = await db.Messages.Where(u => chatsId.Contains(u.ChatId)).ToListAsync();
 
-            messages = await db.Messages.Where(u => chatsId.Contains(u.ChatId)).ToListAsync();
-        }
-        
         foreach (Chat chat in userChats)
         {
             int chatId = chat.Id;

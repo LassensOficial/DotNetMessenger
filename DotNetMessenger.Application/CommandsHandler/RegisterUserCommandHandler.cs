@@ -4,26 +4,17 @@ using DotNetMessenger.Domain.Entities;
 
 namespace DotNetMessenger.Application.CommandsHandler;
 
-public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, int>
+public class RegisterUserCommandHandler(ISqlUserRegister sqlUserRegister, ISessionKeyCreate sessionKeyCreate) : IRequestHandler<RegisterUserCommand, int>
 {
-    private ISqlUserRegister _sqlUserRegister;
-    private ISessionKeyCreate _sessionKeyCreate;
-
-    public RegisterUserCommandHandler(ISqlUserRegister sqlUserRegister, ISessionKeyCreate sessionKeyCreate)
-    {
-        _sqlUserRegister = sqlUserRegister;
-        _sessionKeyCreate = sessionKeyCreate;
-    }
-
     public async Task<int> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
     {
-        bool userFound = await _sqlUserRegister.ExistsUserByName(command.Name);
+        bool userFound = await sqlUserRegister.ExistsUserByName(command.Name);
 
         if (userFound)
             throw new Exception($"Пользователь с именем {command.Name} уже есть!");
         else
         {
-            string sessionKey = await _sessionKeyCreate.CreateSessionKey();
+            string sessionKey = await sessionKeyCreate.CreateSessionKey();
 
             User user = new User
             {
@@ -32,7 +23,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, i
                 SessionKey = sessionKey
             };
 
-            await _sqlUserRegister.AddAsync(user);
+            await sqlUserRegister.AddAsync(user);
 
             return user.Id;
         }
