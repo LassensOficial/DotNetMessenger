@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string? connectionString = builder.Configuration.GetConnectionString("VPS");
+string? connectionString = builder.Configuration.GetConnectionString("MigrationLocal");
 if (string.IsNullOrWhiteSpace(connectionString))
     throw new InvalidOperationException("Не задана строка подключения 'VPS'.");
 

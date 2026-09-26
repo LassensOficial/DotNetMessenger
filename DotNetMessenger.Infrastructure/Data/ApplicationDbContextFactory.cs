@@ -13,7 +13,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
             .AddJsonFile(Path.Combine("Data", "Configurations", "dbsettings.json"), optional: false)
             .Build();
 
-        string? connectionString = configuration.GetConnectionString("Migration");
+        string? connectionString = configuration.GetConnectionString("MigrationLocal");
         if (string.IsNullOrWhiteSpace(connectionString))
             throw new InvalidOperationException("Не задана строка подключения 'Migration'.");
 
