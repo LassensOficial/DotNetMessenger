@@ -12,10 +12,17 @@ public class SqlLoginUserRequestHandler(ApplicationDbContext db) : ISqlUserLogin
         return await db.Users.AnyAsync(u => u.UserName == name);
     }
 
-    public async Task<int> GetUserId(string name)
+    public async Task<bool> ExistsUserByPassword(string name, string password)
     {
         User user = await db.Users.Where(u => u.UserName == name).FirstOrDefaultAsync();
 
-        return user.Id;
+        return user.Password == password;
+    }
+
+    public async Task<User> GetUser(string name)
+    {
+        User user = await db.Users.Where(u => u.UserName == name).FirstOrDefaultAsync();
+
+        return user;
     }
 }

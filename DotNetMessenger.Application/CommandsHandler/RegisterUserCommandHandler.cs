@@ -4,9 +4,9 @@ using DotNetMessenger.Domain.Entities;
 
 namespace DotNetMessenger.Application.CommandsHandler;
 
-public class RegisterUserCommandHandler(ISqlUserRegister sqlUserRegister, ISessionKeyCreate sessionKeyCreate) : IRequestHandler<RegisterUserCommand, int>
+public class RegisterUserCommandHandler(ISqlUserRegister sqlUserRegister, ISessionKeyCreate sessionKeyCreate) : IRequestHandler<RegisterUserCommand, User>
 {
-    public async Task<int> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
+    public async Task<User> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
     {
         bool userFound = await sqlUserRegister.ExistsUserByName(command.Name);
 
@@ -25,7 +25,7 @@ public class RegisterUserCommandHandler(ISqlUserRegister sqlUserRegister, ISessi
 
             await sqlUserRegister.AddAsync(user);
 
-            return user.Id;
+            return user;
         }
     }
 }

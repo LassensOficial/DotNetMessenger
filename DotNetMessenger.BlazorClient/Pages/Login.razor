@@ -42,17 +42,29 @@
         );
         try
         {
-            var response = await httpClient.PostAsJsonAsync("http://localhost:5432/api/Login", request);
+            var response = await httpClient.PostAsJsonAsync("http://localhost:5166/api/Login", request);
 
-            response.EnsureSuccessStatusCode();
+            if (response.IsSuccessStatusCode)
+            {
+                Response user = await response.Content.ReadFromJsonAsync<Response>();
 
-            Notification = "sended successful";
+                Notification = $"Успешный вход, {user.UserName}, твой ID : {user.Id}";
+            }
+            else
+            {
+                string exception = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("ОШИБКА", exception);
+                Notification = $"Ошибка: {exception}";
+            }
         }
         catch(Exception ex)
-        {
+        {            
+            
             Notification = $"Ошибка : {ex.Message}";
         }
     }
 
     private record RequestRegister(string Name, string Password);
+
+    private record Response(int Id, string UserName, string SessionKey);
 }

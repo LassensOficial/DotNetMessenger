@@ -7,6 +7,11 @@
     Зарегестрируйтесь.
 </h1>
 
+<div class="top-bar">
+    <span class="user-id">ID: @user.Id</span>
+    <span class="user-name">Имя: @user.UserName</span>
+</div>
+
 <div class="mb-2">
     <label class="form-label">Имя</label>
     <input class="form-control" @bind="Name"/>
@@ -24,7 +29,7 @@
 </div>
 
 <div>
-    <button @onclick="LoginAsync">
+    <button @onclick="GoLoginAsync">
         Уже есть аккаунт? Войти
     </button>
 </div>
@@ -41,21 +46,37 @@
 
     private string Notification {get;set;}
 
+    private string SessionKey { get; set; }
+
+    private Response user = new Response(0,"","");    
+
     private async Task SendMessageAsync()
     {
 
-        var request = new RequestRegister
-        (
-            Name = this.Name,
-            Password = this.Password
-        );
+        RequestRegister request = new RequestRegister(Name, Password);
+
+        Console.WriteLine(request);
         try
         {
-            var response = await httpClient.PostAsJsonAsync("http://localhost:5432/api/Register", request);
+            var response = await httpClient.PostAsJsonAsync("http://localhost:5166/api/Register", request);
 
-            response.EnsureSuccessStatusCode();
+            if (response.IsSuccessStatusCode)
+            {
+                user = await response.Content.ReadFromJsonAsync<Response>();
 
-            Notification = "sended successful";
+                Notification = $"Успешная регистрация, {user.UserName}, твой ID : {user.Id}";  
+
+                Console.WriteLine(user);
+                Console.WriteLine(response.Content);
+                Console.WriteLine(response); 
+                Console.WriteLine(response);             
+            }
+            else
+            {
+                string exception = await response.Content.ReadAsStringAsync();
+
+                Notification = $"Ошибка: {exception}";
+            }
         }
         catch(Exception ex)
         {
@@ -63,11 +84,14 @@
         }
     }
 
-    private async Task LoginAsync()
+    private async Task GoLoginAsync()
     {
         Console.WriteLine("LOGIN");
         NavigationManager.NavigateTo("login");
     }
 
+
     private record RequestRegister(string Name, string Password);
+
+    private record Response(int Id, string UserName, string SessionKey);
 }

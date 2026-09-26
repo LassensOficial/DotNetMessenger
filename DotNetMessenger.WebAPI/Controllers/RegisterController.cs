@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using DotNetMessenger.Application.Commands;
+using DotNetMessenger.Domain.Entities;
 
 namespace DotNetMessenger.WebAPI.Controllers;
 
@@ -13,14 +14,25 @@ public class RegisterController(ISender sender) : ControllerBase
         [FromBody] RegisterUserRequest request,
         CancellationToken cancellationToken)
     {
-        int userId = await sender.Send(new RegisterUserCommand
-        (
-            request.Name,
-            request.Password
-        ), cancellationToken);
+        try
+        {
+            User user = await sender.Send(new RegisterUserCommand
+            (
+                request.Name,
+                request.Password
+            ), cancellationToken);
 
-        return Ok(userId);
+            Response response = new Response(user.Id, user.UserName, user.SessionKey);
+
+            return Ok(response);
+        }
+        catch(Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }
 
 public record RegisterUserRequest(string Name, string Password);
+
+public record Response(int Id, string UserName, string SessionKey);

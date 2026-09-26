@@ -6,7 +6,17 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string? connectionString = builder.Configuration.GetConnectionString("MigrationLocal");
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()   // Разрешает запросы с любого сайта
+              .AllowAnyMethod()   // Разрешает любые методы (POST, GET, PUT и т.д.)
+              .AllowAnyHeader();  // Разрешает любые заголовки
+    });
+});
+
+string? connectionString = builder.Configuration.GetConnectionString("VPS");
 if (string.IsNullOrWhiteSpace(connectionString))
     throw new InvalidOperationException("Не задана строка подключения 'VPS'.");
 
@@ -25,6 +35,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(LoginUserCommandHandler).Assembly);
 });
 
 var app = builder.Build();
@@ -34,6 +45,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 app.MapControllers();
