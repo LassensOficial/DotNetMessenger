@@ -1,0 +1,1 @@
+public record Response(int Id, string UserName, string SessionKey);

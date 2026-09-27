@@ -1,10 +1,16 @@
 @page "/login"
 
 @inject HttpClient httpClient
+@inject User currentUser
 
 <h1>
     Войдите в аккаунт.
 </h1>
+
+<div class="top-bar">
+    <span class="user-id">ID: @user.Id</span>
+    <span class="user-name">Имя: @user.UserName</span>
+</div>
 
 <div class="mb-2">
     <label class="form-label">Имя</label>
@@ -32,6 +38,8 @@
 
     private string Notification {get;set;}
 
+    private Response user = new Response(0, "", "");
+
     private async Task SendMessageAsync()
     {
 
@@ -46,14 +54,16 @@
 
             if (response.IsSuccessStatusCode)
             {
-                Response user = await response.Content.ReadFromJsonAsync<Response>();
+                user = await response.Content.ReadFromJsonAsync<Response>();
+
+                currentUser.user = user;
 
                 Notification = $"Успешный вход, {user.UserName}, твой ID : {user.Id}";
             }
             else
             {
                 string exception = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("ОШИБКА", exception);
+
                 Notification = $"Ошибка: {exception}";
             }
         }
@@ -65,6 +75,4 @@
     }
 
     private record RequestRegister(string Name, string Password);
-
-    private record Response(int Id, string UserName, string SessionKey);
 }
