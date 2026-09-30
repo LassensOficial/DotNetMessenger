@@ -21,42 +21,42 @@ public partial class Chats
 
     protected override async Task OnInitializedAsync()
     {
-        #region ТЕСТ
+        // #region ТЕСТ
 
-        CurrentUser.CurrentUser = new Response(1, "Artyom", "secret");
+        // CurrentUser.CurrentUser = new Response(1, "Artyom", "secret");
 
-        Console.WriteLine("че та началося");
-        CurrentUser.Chats.Add(new ChatDto
+        // Console.WriteLine("че та началося");
+        // CurrentUser.Chats.Add(new ChatDto
+        // {
+        //     Id = 1,
+        //     UserNameInChat = ["Artyom", "Ivan"]
+        // }
+        // );
+        // CurrentUser.Chats.Add(new ChatDto
+        // {
+        //     Id = 2,
+        //     UserNameInChat = ["Egor", "Artyom"]
+        // }
+        // );
+        // CurrentUser.Chats.Add(new ChatDto
+        // {
+        //     Id = 11111,
+        //     UserNameInChat = ["Helper Chat", "Artyom"]
+        // }
+        // );
+        // #endregion
+
+        if (СurrentUser.CurrentUser != null)
         {
-            Id = 1,
-            UserNameInChat = ["Artyom", "Ivan"]
-        }
-        );
-        CurrentUser.Chats.Add(new ChatDto
-        {
-            Id = 2,
-            UserNameInChat = ["Egor", "Artyom"]
-        }
-        );
-        CurrentUser.Chats.Add(new ChatDto
-        {
-            Id = 11111,
-            UserNameInChat = ["Helper Chat", "Artyom"]
-        }
-        );
-        #endregion
+           RequestGetChats request = new RequestGetChats(СurrentUser.CurrentUser.SessionKey);
 
-        //if (currentUser.CurrentUser != null)
-        //{
-        //    RequestGetChats request = new RequestGetChats(currentUser.CurrentUser.SessionKey);
+           var response = await HttpClient.PostAsJsonAsync("http://localhost:5166/api/Chats", request);
 
-        //    var response = await httpClient.PostAsJsonAsync("http://localhost:5166/api/Chats", request);
-
-        //    if (response.IsSuccessStatusCode)
-        //        currentUser.Chats = (await response.Content.ReadFromJsonAsync<ResponseGetChats>()).Chats;
-        //    else
-        //        Notification = "Ошибка!";
-        //} 
+           if (response.IsSuccessStatusCode)
+               СurrentUser.Chats = (await response.Content.ReadFromJsonAsync<ResponseGetChats>()).Chats;
+           else
+               Notification = "Ошибка!";
+        } 
     }
 
     private void RedirectToChat(int id)
