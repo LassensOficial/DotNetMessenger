@@ -7,78 +7,12 @@
 </h2>
 
 <div class="chats">
-    @foreach (Chat chat in CurrentUser.Chats)
+    @foreach (ChatDto chat in CurrentUser.Chats)
     {
-        <button class="chat_btn" @onclick="() => GoChat(chat.Id)">
+        <button class="chat_btn" @onclick="() => RedirectToChat(chat.Id)">
             <div class="chat">
-                @returnName(chat.UserNameInChat, CurrentUser.CurrentUser.UserName)
+                @GetChatName(chat.UserNameInChat, CurrentUser.CurrentUser.UserName)
             </div>
         </button>
     }
 </div>
-
-@code
-{
-    [Inject] public required User CurrentUser {get;set;}
-
-    private string Notification { get; set; }
-
-    private string returnName(List<string> usersName, string userName)
-    {
-        var isOk = usersName.Remove(userName);
-
-        if (isOk)
-            return usersName.First();
-        else
-            return "Ошибка!";
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        #region ТЕСТ
-
-        currentUser.CurrentUser = new Response(1, "Artyom", "secret");
-
-        Console.WriteLine("че та началося");
-        currentUser.Chats.Add(new Chat
-        {
-            Id = 1,
-            UserNameInChat = ["Artyom", "Ivan"]
-        }
-        );
-        currentUser.Chats.Add(new Chat
-        {
-            Id = 2,
-            UserNameInChat = ["Egor", "Artyom"]
-        }
-        );
-        currentUser.Chats.Add(new Chat
-        {
-            Id = 11111,
-            UserNameInChat = ["Helper Chat", "Artyom"]
-        }
-        );
-        #endregion
-
-        @* if (currentUser.CurrentUser != null)
-        {
-            RequestGetChats request = new RequestGetChats(currentUser.CurrentUser.SessionKey);
-
-            var response = await httpClient.PostAsJsonAsync("http://localhost:5166/api/Chats", request);
-
-            if (response.IsSuccessStatusCode)
-                currentUser.Chats = (await response.Content.ReadFromJsonAsync<ResponseGetChats>()).Chats;
-            else
-                Notification = "Ошибка!";
-        } *@
-    }
-
-    private void GoChat(int id)
-    {
-        Console.WriteLine(id);
-    }
-
-    private record RequestGetChats(string SessionKey);
-
-    private record ResponseGetChats(List<Chat> Chats);
-}

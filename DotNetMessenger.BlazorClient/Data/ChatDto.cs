@@ -1,4 +1,4 @@
-public class Chat
+public class ChatDto
 {
     public int Id { get; set; }
 
