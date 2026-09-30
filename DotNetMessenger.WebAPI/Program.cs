@@ -35,7 +35,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly);
-    cfg.RegisterServicesFromAssembly(typeof(LoginUserCommandHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(LoginUserCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetChatsUserCommand).Assembly);
 });
 
 var app = builder.Build();

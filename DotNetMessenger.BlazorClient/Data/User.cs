@@ -1,5 +1,7 @@
 public class User
 {
-    public Response user { get; set; }
-    public List<Chat> chats { get; set; } = new List<Chat>();
+    public Response CurrentUser { get; set; }
+
+    // public List<int> ChatsId { get; set; } = new List<int>();
+    public List<Chat> Chats { get; set; } = new List<Chat>();
 }

@@ -8,6 +8,27 @@ public class SqlChatsRepositoryRequestHandler(ApplicationDbContext db) : IChatsR
 
     public async Task<List<Chat>> GetChats(string key)
     {
+        // List<int> chatsId = new List<int>();
+
+        // List<Chat> userChats = new List<Chat>();
+
+        // List<Message> messages = new List<Message>();
+
+        // chatsId = await db.Users.Where(u => u.SessionKey == key).SelectMany(u => u.ChatsId).ToListAsync();
+        // userChats = await db.Chats.Where(c => chatsId.Contains(c.Id)).ToListAsync();
+        // messages = await db.Messages.Where(u => chatsId.Contains(u.ChatId)).ToListAsync();
+
+        // foreach (Chat chat in userChats)
+        // {
+        //     int chatId = chat.Id;
+
+        //     foreach (Message message in messages)
+        //     {
+        //         if (message.ChatId == chatId)
+        //             chat.Messages.Add(message);
+        //     }
+        // }
+
         List<int> chatsId = new List<int>();
 
         List<Chat> userChats = new List<Chat>();
@@ -16,7 +37,7 @@ public class SqlChatsRepositoryRequestHandler(ApplicationDbContext db) : IChatsR
 
         chatsId = await db.Users.Where(u => u.SessionKey == key).SelectMany(u => u.ChatsId).ToListAsync();
         userChats = await db.Chats.Where(c => chatsId.Contains(c.Id)).ToListAsync();
-        messages = await db.Messages.Where(u => chatsId.Contains(u.ChatId)).ToListAsync();
+        messages = await db.Messages.Where(u => chatsId.Contains(u.ChatId)).OrderBy(m => m.CreatedTime).ToListAsync();
 
         foreach (Chat chat in userChats)
         {
@@ -25,7 +46,10 @@ public class SqlChatsRepositoryRequestHandler(ApplicationDbContext db) : IChatsR
             foreach (Message message in messages)
             {
                 if (message.ChatId == chatId)
-                    chat.Messages.Add(message);
+                {
+                    chat.LastMessage = message;
+                    break;
+                }
             }
         }
 

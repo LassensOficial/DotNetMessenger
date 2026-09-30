@@ -3,7 +3,7 @@ namespace DotNetMessenger.Application.Commands;
 using DotNetMessenger.Domain.Entities;
 using MediatR;
 
-public record GiveChatsUserCommand(string key) : IRequest<List<Chat>>;
+public record GetChatsUserCommand(string key) : IRequest<List<Chat>>;
 
 public interface IChatsRepository
 {

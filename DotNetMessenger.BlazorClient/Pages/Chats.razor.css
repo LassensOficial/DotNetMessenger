@@ -1,0 +1,37 @@
+.chats
+{
+    display: flex;
+    flex-direction: column; /* Выстраивает элементы вертикально (сверху вниз) */
+    gap: 12px;              /* Отступ между чатами */
+    padding: 20px;
+    width: 100%;            /* Контейнер занимает всю ширину */
+    box-sizing: border-box;
+}
+
+.chat_btn
+{
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    width: 100%;            /* Кнопка растягивается на всю ширину родителя */
+    text-align: left;
+}
+
+.chat
+{
+    color: white;               
+    background-color: #007bff;  
+    padding: 15px 20px;
+    border-radius: 8px;         
+    width: 100%;            /* Внутренний блок тоже занимает всю ширину */
+    box-sizing: border-box; /* Чтобы padding не раздувал блок шире экрана */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+    transition: background-color 0.2s; 
+}
+
+/* Эффект при наведении */
+.chat_btn:hover .chat 
+{
+    background-color: #0056b3; 
+}

@@ -1,11 +1,83 @@
 @page "/chats"
 
 @inject HttpClient httpClient
+@inject User currentUser
+
+<h2>
+    @(Notification != null ? Notification : string.Empty)
+</h2>
+
+<div class="chats">
+    @foreach (Chat chat in currentUser.Chats)
+    {
+        <button class="chat_btn" @onclick="() => GoChat(chat.Id)">
+            <div class="chat">
+                @returnName(chat.UserNameInChat, currentUser.CurrentUser.UserName)
+            </div>
+        </button>
+    }
+</div>
 
 @code
 {
-    private void OnInitialized()
+    private string Notification { get; set; }
+
+    private string returnName(List<string> usersName, string userName)
     {
-        
+        var isOk = usersName.Remove(userName);
+
+        if (isOk)
+            return usersName.First();
+        else
+            return "Ошибка!";
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        #region ТЕСТ
+
+        currentUser.CurrentUser = new Response(1, "Artyom", "secret");
+
+        Console.WriteLine("че та началося");
+        currentUser.Chats.Add(new Chat
+        {
+            Id = 1,
+            UserNameInChat = ["Artyom", "Ivan"]
+        }
+        );
+        currentUser.Chats.Add(new Chat
+        {
+            Id = 2,
+            UserNameInChat = ["Egor", "Artyom"]
+        }
+        );
+        currentUser.Chats.Add(new Chat
+        {
+            Id = 11111,
+            UserNameInChat = ["Helper Chat", "Artyom"]
+        }
+        );
+        #endregion
+
+        @* if (currentUser.CurrentUser != null)
+        {
+            RequestGetChats request = new RequestGetChats(currentUser.CurrentUser.SessionKey);
+
+            var response = await httpClient.PostAsJsonAsync("http://localhost:5166/api/Chats", request);
+
+            if (response.IsSuccessStatusCode)
+                currentUser.Chats = (await response.Content.ReadFromJsonAsync<ResponseGetChats>()).Chats;
+            else
+                Notification = "Ошибка!";
+        } *@
+    }
+
+    private void GoChat(int id)
+    {
+        Console.WriteLine(id);
+    }
+
+    private record RequestGetChats(string SessionKey);
+
+    private record ResponseGetChats(List<Chat> Chats);
 }

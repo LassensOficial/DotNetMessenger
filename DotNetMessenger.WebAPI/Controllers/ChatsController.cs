@@ -8,7 +8,7 @@ public class ChatsController(ISender sender) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> GetChats([FromBody] GetChatsRequest request, CancellationToken cancellationToken) 
-        => Ok(await sender.Send(new GiveChatsUserCommand(request.SessionKey)));
+        => Ok(await sender.Send(new GetChatsUserCommand(request.SessionKey)));
 }
 
 public record GetChatsRequest(string SessionKey);
