@@ -1,3 +1,5 @@
+using DotNetMessenger.Application;
+using DotNetMessenger.Application.Behaviors;
 using DotNetMessenger.Application.Commands;
 using DotNetMessenger.Application.CommandsHandler;
 using DotNetMessenger.Application.Repositories;
@@ -32,11 +34,13 @@ builder.Services.AddScoped<IChatsRepository, SqlChatsRepositoryRequestHandler>()
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddApplicationValidators();
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(LoginUserCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(GetChatsUserCommand).Assembly);
+    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 
 var app = builder.Build();
