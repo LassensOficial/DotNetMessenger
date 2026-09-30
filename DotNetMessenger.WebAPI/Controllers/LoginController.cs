@@ -1,4 +1,5 @@
 using DotNetMessenger.Application.Commands;
+using DotNetMessenger.Application.Exceptions;
 using DotNetMessenger.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,17 @@ public class LoginController(ISender sender) : ControllerBase
 
             return Ok(response);
         }
-        catch(Exception ex)
+        catch (RequestValidationException ex)
+        {
+            foreach ((string property, string[] messages) in ex.Errors)
+            {
+                foreach (string message in messages)
+                    ModelState.AddModelError(property, message);
+            }
+
+            return ValidationProblem(ModelState);
+        }
+        catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
