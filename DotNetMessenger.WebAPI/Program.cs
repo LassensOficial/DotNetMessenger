@@ -1,7 +1,8 @@
 using DotNetMessenger.Application.Commands;
 using DotNetMessenger.Application.CommandsHandler;
+using DotNetMessenger.Application.Repositories;
 using DotNetMessenger.Infrastructure.Data;
-using DotNetMessenger.Infrastructure.RequestHandler;
+using DotNetMessenger.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,8 +24,7 @@ if (string.IsNullOrWhiteSpace(connectionString))
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-builder.Services.AddScoped<ISqlUserLogin, SqlLoginUserRequestHandler>();
-builder.Services.AddScoped<ISqlUserRegister, SqlRegisterUserRequestHandler>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ISessionKeyCreate, SessionKey>();
 builder.Services.AddScoped<ISessionRepository, SqlSessionRepositoryHandler>();
 builder.Services.AddScoped<IChatsRepository, SqlChatsRepositoryRequestHandler>();

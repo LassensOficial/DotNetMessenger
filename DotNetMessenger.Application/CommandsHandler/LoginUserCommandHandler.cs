@@ -1,28 +1,21 @@
-namespace DotNetMessenger.Application.CommandsHandler;
-
+using DotNetMessenger.Application.Repositories;
 using DotNetMessenger.Domain.Entities;
 using MediatR;
 
-public class LoginUserCommandHandler(ISqlUserLogin sqlUserLogin) : IRequestHandler<LoginUserCommand, User>
+namespace DotNetMessenger.Application.CommandsHandler;
+
+public class LoginUserCommandHandler(IUserRepository userRepository) : IRequestHandler<LoginUserCommand, User>
 {
     public async Task<User> Handle(LoginUserCommand command, CancellationToken cancellationToken)
     {
-        bool userFound = await sqlUserLogin.ExistsUserByName(command.Name);
+        User? user = await userRepository.GetByNameAsync(command.Name, cancellationToken);
 
-        if (userFound)
-        {
-            bool passwordIsCorrect = await sqlUserLogin.ExistsUserByPassword(command.Name, command.Password);
-
-            if (passwordIsCorrect)
-            {
-                User user = await sqlUserLogin.GetUser(command.Name);
-
-                return user;
-            }
-            else
-                throw new Exception("Неверный пароль!");
-        }
-        else
+        if (user is null)
             throw new Exception($"Пользователя с именем {command.Name} нет!");
+
+        if (user.Password != command.Password)
+            throw new Exception("Неверный пароль!");
+
+        return user;
     }
 }
