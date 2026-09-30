@@ -1,18 +1,17 @@
 @page "/chats"
 
 @inject HttpClient httpClient
-@inject User currentUser
 
 <h2>
     @(Notification != null ? Notification : string.Empty)
 </h2>
 
 <div class="chats">
-    @foreach (Chat chat in currentUser.Chats)
+    @foreach (Chat chat in CurrentUser.Chats)
     {
         <button class="chat_btn" @onclick="() => GoChat(chat.Id)">
             <div class="chat">
-                @returnName(chat.UserNameInChat, currentUser.CurrentUser.UserName)
+                @returnName(chat.UserNameInChat, CurrentUser.CurrentUser.UserName)
             </div>
         </button>
     }
@@ -20,6 +19,8 @@
 
 @code
 {
+    [Inject] public required User CurrentUser {get;set;}
+
     private string Notification { get; set; }
 
     private string returnName(List<string> usersName, string userName)
