@@ -12,10 +12,13 @@ public partial class Chat
     [Inject] public required HttpClient HttpClient { get; set; }
 
     [Parameter] public int Id { get; init; } = default;
-    [Parameter] public string SessionKey { get; set; } = string.Empty;
+
+    public string SessionKey { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        SessionKey = CurrentUser.CurrentUser.SessionKey;
+        
         GetChat();
     }
 
@@ -25,6 +28,8 @@ public partial class Chat
             SessionKey,
             Id
         );
+
+        Console.WriteLine(request);
 
         var response = await HttpClient.PostAsJsonAsync("http://localhost:5166/api/GetChat", request);
 

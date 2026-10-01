@@ -13,7 +13,12 @@ public class ChatsController(ISender sender) : ControllerBase
     [HttpPost("GetChat")]
     public async Task<IActionResult> GetChat([FromBody] GetChatRequest request, CancellationToken cancellationToken)
     => Ok(await sender.Send(new GetChatUserCommand(request.SessionKey, request.Id)));
+
+    [HttpPost("CreateChat")]
+    public async Task<IActionResult> CreateChat([FromBody] CreateChatRequest request, CancellationToken cancellationToken)
+    => Ok(await sender.Send(new CreateChatCommand(request.SessionKey, request.Name)));
 }
 
 public record GetChatsRequest(string SessionKey);
 public record GetChatRequest(string SessionKey, int Id);
+public record CreateChatRequest(string SessionKey, string Name);

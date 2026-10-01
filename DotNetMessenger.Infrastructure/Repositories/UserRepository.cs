@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using DotNetMessenger.Application.Repositories;
 using DotNetMessenger.Domain.Entities;
 using DotNetMessenger.Infrastructure.Data;
@@ -23,8 +24,18 @@ public class UserRepository(ApplicationDbContext db) : IUserRepository
         await db.SaveChangesAsync(cancellationToken);
     }
 
-    public Task<User?> GetByNameAsync(string name, CancellationToken cancellationToken)
+    public async Task<User?> GetByNameAsync(string name, CancellationToken cancellationToken)
     {
-        return db.Users.FirstOrDefaultAsync(u => u.UserName == name, cancellationToken);
+        return await db.Users.FirstOrDefaultAsync(u => u.UserName == name, cancellationToken);
+    }
+
+    public async Task<string> GetNameBySessionKeyAsync(string sessionKey, CancellationToken cancellationToken)
+    {
+        return await db.Users.Where(u => u.SessionKey == sessionKey).Select(u => u.UserName).FirstOrDefaultAsync();
+    }
+    
+    public async Task<int> GetIdByNameAsync(string name, CancellationToken cancellationToken)
+    {
+        return await db.Users.Where(u => u.UserName == name).Select(u => u.Id).FirstOrDefaultAsync();
     }
 }

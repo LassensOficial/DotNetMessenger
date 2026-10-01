@@ -1,9 +1,47 @@
-﻿@page "/chats/{Id}/chat"
+﻿@page "/chats/{Id:int}/chat"
 
-<h3>Тут реальный тет-а-тет Chat номер {@Id}</h3>
+<div class="chat-container">
+    
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ (Шапка чата) -->
+    <div class="chat-header">
+        <!-- Сюда вы поставите аватарку, имя и id -->
+        <div class="chat-header-info">
+            <div class="mock-avatar"></div>
+            <div>
+                <h3>Собеседник (Chat #@Id)</h3>
+                <span class="status">в сети</span>
+            </div>
+        </div>
+    </div>
 
-<div>
-    <h1>
-        
-    </h1>
+    <!-- ЗОНА СООБЩЕНИЙ (Скроллится, если сообщений много) -->
+    <div class="chat-messages">
+        @* @foreach (var message in Messages) { *@
+            <!-- Пример входящего сообщения -->
+            <div class="message incoming">
+                <div class="message-content">
+                    Привет! Как дела? Это пример входящего сообщения.
+                </div>
+            </div>
+
+            <!-- Пример исходящего сообщения -->
+            <div class="message outgoing">
+                <div class="message-content">
+                    Привет! Все отлично, верстаю красивый интерфейс для чата.
+                </div>
+            </div>
+        @* } *@
+    </div>
+
+    <!-- НИЖНЯЯ ПАНЕЛЬ (Ввод сообщения) -->
+    <div class="chat-input-zone">
+        <div class="input-wrapper">
+            <input type="text" placeholder="Напишите сообщение..." class="message-input" />
+            <button class="send-btn">
+                <!-- Иконка бумажного самолетика (SVG) -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+        </div>
+    </div>
+
 </div>

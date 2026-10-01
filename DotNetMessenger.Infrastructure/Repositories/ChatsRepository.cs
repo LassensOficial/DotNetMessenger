@@ -60,4 +60,10 @@ public class ChatsRepository(ApplicationDbContext db) : IChatsRepository
     {
         return await db.Chats.Where(c => c.Id == id).FirstOrDefaultAsync();
     }
+
+    public async Task AddAsync(Chat chat)
+    {
+        await db.Chats.AddAsync(chat);
+        await db.SaveChangesAsync();
+    }
 }
