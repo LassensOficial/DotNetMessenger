@@ -7,9 +7,14 @@ namespace DotNetMessenger.Infrastructure.Repositories;
 
 public class UserRepository(ApplicationDbContext db) : IUserRepository
 {
-    public Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken)
+    public async Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken)
     {
-        return db.Users.AnyAsync(u => u.UserName == name, cancellationToken);
+        return await db.Users.AnyAsync(u => u.UserName == name, cancellationToken);
+    }
+
+    public async Task<bool> ExistsBySessionKey(string sessionKey, CancellationToken cancellationToken)
+    {
+        return await db.Users.Where(u => u.SessionKey == sessionKey).AnyAsync();
     }
 
     public async Task AddAsync(User user, CancellationToken cancellationToken)

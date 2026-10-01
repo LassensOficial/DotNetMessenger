@@ -3,7 +3,7 @@ using DotNetMessenger.Domain.Entities;
 using DotNetMessenger.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-public class SqlChatsRepositoryRequestHandler(ApplicationDbContext db) : IChatsRepository
+public class ChatsRepository(ApplicationDbContext db) : IChatsRepository
 {
 
     public async Task<List<Chat>> GetChats(string key)
@@ -54,5 +54,10 @@ public class SqlChatsRepositoryRequestHandler(ApplicationDbContext db) : IChatsR
         }
 
         return userChats;
+    }
+
+    public async Task<Chat> GetChat(int id)
+    {
+        return await db.Chats.Where(c => c.Id == id).FirstOrDefaultAsync();
     }
 }

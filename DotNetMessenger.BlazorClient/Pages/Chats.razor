@@ -1,10 +1,11 @@
 @page "/chats"
 
-@inject HttpClient httpClient
+@inject HttpClient HttpClient
 
-<h2>
-    @(Notification != null ? Notification : string.Empty)
-</h2>
+<div class="chats-header">
+    <h2>@(Notification != null ? Notification : string.Empty)</h2>
+    <button class="action-btn" @onclick="NewChat">Новый чат!</button>
+</div>
 
 <div class="chats">
     @foreach (ChatDto chat in CurrentUser.Chats)

@@ -28,8 +28,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ISessionKeyCreate, SessionKey>();
-builder.Services.AddScoped<ISessionRepository, SqlSessionRepositoryHandler>();
-builder.Services.AddScoped<IChatsRepository, SqlChatsRepositoryRequestHandler>();
+builder.Services.AddScoped<ISessionKeyRepository, SessionKeyRepository>();
+builder.Services.AddScoped<IChatsRepository, ChatsRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

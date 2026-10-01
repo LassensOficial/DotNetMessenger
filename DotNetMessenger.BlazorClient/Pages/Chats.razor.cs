@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System.Net.Http.Json;
 
 namespace DotNetMessenger.BlazorClient.Pages;
 
@@ -46,23 +47,29 @@ public partial class Chats
         // );
         // #endregion
 
-        if (СurrentUser.CurrentUser != null)
+        if (CurrentUser.CurrentUser != null)
         {
-           RequestGetChats request = new RequestGetChats(СurrentUser.CurrentUser.SessionKey);
+            RequestGetChats request = new RequestGetChats(CurrentUser.CurrentUser.SessionKey);
 
-           var response = await HttpClient.PostAsJsonAsync("http://localhost:5166/api/Chats", request);
+            var response = await HttpClient.PostAsJsonAsync("http://localhost:5166/api/Chats", request);
 
-           if (response.IsSuccessStatusCode)
-               СurrentUser.Chats = (await response.Content.ReadFromJsonAsync<ResponseGetChats>()).Chats;
-           else
+
+            if (response.IsSuccessStatusCode)
+               CurrentUser.Chats = (await response.Content.ReadFromJsonAsync<ResponseGetChats>()).Chats;
+            else
                Notification = "Ошибка!";
-        } 
+        }
     }
 
     private void RedirectToChat(int id)
     {
         NavigationManager.NavigateTo($"chats/{id}/chat");
         Console.WriteLine(id);
+    }
+
+    private void NewChat()
+    {
+        Console.WriteLine("Нови чат!");
     }
 
     private record RequestGetChats(string SessionKey);

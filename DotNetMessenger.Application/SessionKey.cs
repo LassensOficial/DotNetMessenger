@@ -1,6 +1,6 @@
 using DotNetMessenger.Application.CommandsHandler;
 
-public class SessionKey(ISessionRepository sessionRepository) : ISessionKeyCreate
+public class SessionKey(ISessionKeyRepository sessionKetRepository) : ISessionKeyCreate
 {
     private string _symbols = "QWERTYUIOPASDFGHJKLZXCVBNM123456789!@#$%^&*()_+,.{}";
 
@@ -18,14 +18,14 @@ public class SessionKey(ISessionRepository sessionRepository) : ISessionKeyCreat
                 key += _symbols[Random.Shared.Next(0, 51)];
             }
 
-            exists = await sessionRepository.ExistsSessionKey(key);
+            exists = await sessionKetRepository.ExistsSessionKey(key);
         }
 
         return key;
     }
 }
 
-public interface ISessionRepository
+public interface ISessionKeyRepository
 {
     public Task<bool> ExistsSessionKey(string key);
 }

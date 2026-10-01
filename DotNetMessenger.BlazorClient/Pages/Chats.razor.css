@@ -35,3 +35,24 @@
 {
     background-color: #0056b3; 
 }
+
+.chats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px; /* Отступ перед началом списка чатов */
+}
+
+.action-btn {
+    /* Ваши стили для кнопки (цвет, рамка, внутренние отступы) */
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.action-btn:hover {
+    background-color: #0056b3;
+}
