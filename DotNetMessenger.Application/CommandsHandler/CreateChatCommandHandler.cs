@@ -5,7 +5,6 @@ using MediatR;
 
 public class CreateChatCommandHandler(IChatsRepository chatsRepository, IUserRepository userRepository) : IRequestHandler<CreateChatCommand, Chat>
 {
-    
     public async Task<Chat> Handle(CreateChatCommand command, CancellationToken cancellationToken)
     {
         bool userFound = await userRepository.ExistsByNameAsync(command.TargetUsername, cancellationToken); // собеседник
