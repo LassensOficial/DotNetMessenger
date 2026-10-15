@@ -1,4 +1,4 @@
 using MediatR;
 using DotNetMessenger.Domain.Entities;
 
-public record CreateChatCommand(string SessionKey, string TargetUsername) : IRequest<Chat>;
+public record CreateChatCommand(List<int> usersIdInChat) : IRequest<Chat>;
