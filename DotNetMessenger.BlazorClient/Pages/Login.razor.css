@@ -1,0 +1,300 @@
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* На ПК вычитаем базовую высоту шапки шаблона */
+    min-height: calc(100vh - 3.5rem); 
+    width: 100%; 
+    
+    background: radial-gradient(circle at 10% 20%, rgb(242, 246, 253) 0%, rgb(219, 228, 247) 90.1%);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 40px 20px; 
+    box-sizing: border-box;
+    position: relative; /* Важно для абсолютного позиционирования оверлея успеха */
+}
+
+/* === КАРТОЧКА СТИЛЯ GLASSMORPHISM === */
+.login-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 40px;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.03);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
+}
+
+.login-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.fade-out-card {
+    opacity: 0;
+    transform: scale(0.9) translateY(30px);
+    pointer-events: none;
+}
+
+.login-header h1 {
+    font-size: 1.8rem;
+    color: #1a1a1a;
+    margin: 0 0 8px 0;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.login-header p {
+    font-size: 0.95rem;
+    color: #666666;
+    margin: 0 0 32px 0;
+}
+
+/* === ИНПУТЫ MATERIAL DESIGN === */
+.input-group {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.input-group input {
+    font-size: 1rem;
+    padding: 12px 0;
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    background: transparent;
+    transition: all 0.2s ease;
+    color: #333;
+    outline: none;
+}
+
+.input-group label {
+    color: #999;
+    font-size: 1rem;
+    position: absolute;
+    pointer-events: none;
+    left: 0;
+    top: 12px;
+    transition: all 0.2s ease;
+}
+
+/* Анимация поднятия плейсхолдера */
+.input-group input:focus ~ label, 
+.input-group input:valid ~ label {
+    top: -12px;
+    font-size: 0.8rem;
+    color: #007bff;
+    font-weight: 600;
+}
+
+.input-group .bar {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.input-group .bar:before {
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 0;
+    position: absolute;
+    background: #007bff;
+    transition: all 0.3s ease;
+    left: 50%;
+}
+
+.input-group input:focus ~ .bar:before {
+    width: 100%;
+    left: 0;
+}
+
+/* Ошибки */
+.notification-error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #ffeef0;
+    color: #d92534;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    margin-bottom: 20px;
+    animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+/* === КНОПКИ И ССЫЛКИ === */
+.action-zone {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+.btn-primary:hover {
+    filter: brightness(1.05);
+    box-shadow: 0 6px 16px rgba(0, 123, 255, 0.3);
+}
+
+.btn-primary svg {
+    transition: transform 0.2s ease;
+}
+
+.btn-primary:hover svg {
+    transform: translateX(4px);
+}
+
+.link-register {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.link-register:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* === СТИЛИ АНИМАЦИИ УСПЕХА === */
+.success-overlay {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.5s ease-out forwards;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+.success-overlay h2 {
+    font-size: 1.8rem;
+    color: #1a1a1a;
+    margin: 24px 0 8px 0;
+}
+
+.success-overlay p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.lock-wrapper {
+    position: relative;
+    width: 60px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+.lock-body {
+    position: absolute;
+    bottom: 0;
+    width: 60px;
+    height: 46px;
+    background: #4CAF50;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+}
+
+.lock-keyhole {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 14px;
+    background: #fff;
+    border-radius: 4px;
+}
+
+.lock-shackle {
+    position: absolute;
+    top: 10px;
+    left: 11px;
+    width: 38px;
+    height: 40px;
+    border: 6px solid #4CAF50;
+    border-bottom: none;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-sizing: border-box;
+    animation: unlock 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    transform-origin: left bottom;
+}
+
+@keyframes unlock {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(0deg); }
+    100% { transform: translateY(-12px) rotate(-25deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ==========================================================================
+   ИСПРАВЛЕНИЕ: АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ (Экраны меньше 768px)
+   ========================================================================== */
+@media (max-width: 767.98px) {
+    .login-page {
+        /* Меняем жесткую высоту на минимальную с запасом для скролла */
+        min-height: calc(100vh - 110px);
+        height: auto !important;
+        
+        padding: 16px 16px 40px 16px; /* Запас снизу */
+        background: #ffffff; 
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; 
+        align-items: center;
+        box-sizing: border-box;
+    }
+
+    .login-card {
+        max-width: 100%;
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+        padding: 20px 8px !important;
+        margin-top: 15px; 
+    }
+}

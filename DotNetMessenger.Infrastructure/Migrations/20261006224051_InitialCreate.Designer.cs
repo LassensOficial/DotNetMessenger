@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DotNetMessenger.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260926092818_InitialCreate")]
+    [Migration("20261006224051_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -34,11 +34,13 @@ namespace DotNetMessenger.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("FirstUserId")
-                        .HasColumnType("integer");
+                    b.PrimitiveCollection<List<string>>("UserNameInChat")
+                        .IsRequired()
+                        .HasColumnType("text[]");
 
-                    b.Property<int>("SecondUserId")
-                        .HasColumnType("integer");
+                    b.PrimitiveCollection<List<int>>("UsersIdInChat")
+                        .IsRequired()
+                        .HasColumnType("integer[]");
 
                     b.HasKey("Id");
 

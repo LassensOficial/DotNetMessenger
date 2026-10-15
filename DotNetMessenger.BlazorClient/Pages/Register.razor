@@ -1,89 +1,97 @@
+@page "/"
 @page "/register"
 
-@inject NavigationManager navigationManager
-@inject HttpClient httpClient
-@inject User currentUser
+<PageTitle>Регистрация</PageTitle>
 
-<h1>
-    Зарегестрируйтесь.
-</h1>
+<div class="register-page">
+    <div class="register-card @(IsSuccess ? "fade-out-card" : "")">
 
-<div class="top-bar">
-    <span class="user-id">ID: @user.Id</span>
-    <span class="user-name">Имя: @user.UserName</span>
-</div>
+        @if (!IsSuccess)
+        {
+            <!-- ШАПКА ФОРМЫ -->
+            <div class="register-header">
+                <h1>Создать аккаунт</h1>
+                <p>Присоединяйтесь к нашему мессенджеру прямо сейчас</p>
+            </div>
 
-<div class="mb-2">
-    <label class="form-label">Имя</label>
-    <input class="form-control" @bind="Name"/>
-</div>
+            <!-- ИНПУТ: ИМЯ -->
+            <div class="input-group">
+                <input id="reg-name" type="text" required @bind="Name" />
+                <label for="reg-name">Ваше имя</label>
+                <div class="bar"></div>
+            </div>
 
-<div class="mb-2">
-    <label class="form-label">Пароль</label>
-    <input class="form-control" @bind="Password"/>
-</div>
+            <!-- ИНПУТ: ПАРОЛЬ -->
+            <div class="input-group">
+                <input id="reg-pass" type="password" required @bind="Password" />
+                <label for="reg-pass">Придумайте пароль</label>
+                <div class="bar"></div>
+            </div>
 
-<div>
-    <button @onclick="SendMessageAsync">
-        Отправить
-    </button>
-</div>
+            <!-- УВЕДОМЛЕНИЯ ОБ ОШИБКАХ -->
+            @if (!string.IsNullOrEmpty(Notification))
+            {
+                <div class="notification-error">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <span>@Notification</span>
+                </div>
+            }
 
-<div>
-    <button @onclick="GoLoginAsync">
-        Уже есть аккаунт? Войти
-    </button>
-</div>
+            <!-- КНОПКИ ДЕЙСТВИЯ -->
+            <div class="action-zone">
+                <button class="btn-primary" @onclick="RegisterAsync">
+                    <span>Зарегистрироваться</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 5"></polyline>
+                    </svg>
+                </button>
 
-<h2>
-    @(Notification != null ? Notification : string.Empty)
-</h2>
+                <button class="btn-secondary" @onclick="GoLoginAsync">
+                    Уже есть аккаунт? Войти
+                </button>
+            </div>
+        }
+    </div>
 
-
-@code
-{
-    private string Name {get;set;}
-    private string Password {get;set;}
-
-    private string Notification {get;set;}
-
-    private string SessionKey { get; set; }
-
-    private Response user = new Response(0,"","");    
-
-    private async Task SendMessageAsync()
+    <!-- ТА САМАЯ АНИМАЦИЯ УСПЕХА -->
+    @if (IsSuccess)
     {
-        RequestRegister request = new RequestRegister(Name, Password);
+        <div class="success-overlay">
+            <div class="success-checkmark">
+                <div class="check-icon">
+                    <span class="icon-line line-tip"></span>
+                    <span class="icon-line line-long"></span>
+                    <div class="icon-circle"></div>
+                    <div class="icon-fix"></div>
+                </div>
+            </div>
+            <h2>Добро пожаловать, @Name!</h2>
+            <p>Регистрация прошла успешно. Перенаправляем в приложение...</p>
+        </div>
+    }
+</div>
 
-        try
-        {
-            var response = await httpClient.PostAsJsonAsync("http://localhost:5166/api/Register", request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                user = await response.Content.ReadFromJsonAsync<Response>();
-
-                currentUser.CurrentUser = user;
-
-                Notification = $"Успешная регистрация, {user.UserName}, твой ID : {user.Id}";            
-            }
-            else
-            {
-                string exception = await response.Content.ReadAsStringAsync();
-
-                Notification = $"Ошибка: {exception}";
-            }
-        }
-        catch(Exception ex)
-        {
-            Notification = $"Ошибка : {ex.Message}";
-        }
+<style>
+    /* Полностью убираем любые ограничения высоты и скролла для этой страницы */
+    .page main .content,
+    main article.content {
+        padding: 0 !important;
+        max-width: 100% !important;
+        height: auto !important;
     }
 
-    private async Task GoLoginAsync()
-    {
-        navigationManager.NavigateTo("login");
+    html,
+    body,
+    main {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        height: auto !important;
+        position: static !important;
+        /* Убираем фиксацию экрана */
     }
-
-    private record RequestRegister(string Name, string Password);
-}
+</style>

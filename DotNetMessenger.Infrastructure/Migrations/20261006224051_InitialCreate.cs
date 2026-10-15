@@ -19,8 +19,8 @@ namespace DotNetMessenger.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FirstUserId = table.Column<int>(type: "integer", nullable: false),
-                    SecondUserId = table.Column<int>(type: "integer", nullable: false)
+                    UsersIdInChat = table.Column<List<int>>(type: "integer[]", nullable: false),
+                    UserNameInChat = table.Column<List<string>>(type: "text[]", nullable: false)
                 },
                 constraints: table =>
                 {

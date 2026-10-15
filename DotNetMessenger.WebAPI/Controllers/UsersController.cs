@@ -1,22 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
-
-namespace DotNetMessenger.WebAPI.Controllers;
+using DotNetMessenger.Domain.Entities;
+using MediatR;
 
 [ApiController]
-[Route("api/[controller]")]
-public class UsersController : ControllerBase
+[Route("api/user")]
+public class UsersController(ISender sender) : ControllerBase
 {
-    [HttpGet]
-    public ActionResult<IReadOnlyList<UserResponse>> GetUsers()
+    [HttpPost("profile")]
+    public async Task<IActionResult> GetProfile([FromBody] RequestGetProfile request)
     {
-        var users = new[]
-        {
-            new UserResponse(1, "alice"),
-            new UserResponse(2, "bob")
-        };
-
-        return Ok(users);
+        User user = await sender.Send(new GetUserProfileCommand(request.id));
+        
     }
 }
 
-public record UserResponse(int Id, string UserName);
+public record RequestGetProfile(int id);

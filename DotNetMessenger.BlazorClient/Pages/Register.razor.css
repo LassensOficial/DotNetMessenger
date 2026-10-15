@@ -1,0 +1,221 @@
+/* Главный экран регистрации */
+.register-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: calc(100vh - 3.5rem); /* Вычитаем ПК шапку */
+    background-color: #f4f6f9;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Карточка регистрации */
+.register-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    padding: 40px 32px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e6e9ed;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    box-sizing: border-box;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Анимация исчезновения карточки при успехе */
+.fade-out-card {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+}
+
+/* Шапка формы */
+.register-header {
+    text-align: center;
+}
+.register-header h1 {
+    margin: 0 0 8px 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+.register-header p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #6c757d;
+}
+
+/* --- ТВОИ КАСТОМНЫЕ ИНПУТЫ (Material Design) --- */
+.input-group {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.input-group input {
+    font-size: 1rem;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #757575;
+    background: transparent;
+    outline: none;
+    color: #333333;
+    box-sizing: border-box;
+}
+
+.input-group label {
+    color: #999999;
+    font-size: 1rem;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    transition: 0.2s ease all;
+}
+
+/* Анимация лейбла при фокусе и валидности */
+.input-group input:focus ~ label,
+.input-group input:required:valid ~ label {
+    top: -15px;
+    font-size: 0.85rem;
+    color: #007bff;
+}
+
+/* Полоска под инпутом */
+.bar {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+.bar:before, .bar:after {
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 1px;
+    position: absolute;
+    background: #007bff;
+    transition: 0.2s ease all;
+}
+.bar:before { left: 50%; }
+.bar:after { right: 50%; }
+
+.input-group input:focus ~ .bar:before,
+.input-group input:focus ~ .bar:after {
+    width: 50%;
+}
+
+/* Уведомление об ошибке */
+.notification-error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #fff5f5;
+    border: 1px solid #ffe3e3;
+    padding: 12px;
+    border-radius: 8px;
+    color: #e03131;
+    font-size: 0.9rem;
+}
+.notification-error svg {
+    flex-shrink: 0;
+}
+
+/* Зона кнопок */
+.action-zone {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #007bff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px;
+    text-align: center;
+}
+.btn-secondary:hover {
+    text-decoration: underline;
+}
+
+/* --- АНИМАЦИЯ УСПЕХА --- */
+.success-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 16px;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+/* ==========================================================================
+   АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ (Экраны меньше 768px)
+   ========================================================================== */
+@media (max-width: 767.98px) {
+    .register-page {
+        /* 
+           Заменяем жесткий height на min-height! 
+           Теперь, если контент влезает — он зафиксирован. 
+           Если появляется большая ошибка — контейнер растягивается, позволяя скроллить.
+        */
+        min-height: calc(100vh - 110px); 
+        height: auto !important; 
+        
+        padding: 16px 16px 40px 16px; /* Добавили отступ снизу (40px), чтобы кнопка "Войти" не липла к краю при скролле */
+        background-color: #ffffff; 
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Прижимаем к верху, чтобы скролл шел естественно вниз */
+        align-items: center;
+        box-sizing: border-box;
+    }
+
+    .register-card {
+        max-width: 100%;
+        box-shadow: none;
+        border: none;
+        padding: 10px 8px; 
+        gap: 24px; 
+    }
+}

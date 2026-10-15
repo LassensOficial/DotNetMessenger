@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace DotNetMessenger.Domain.Entities;
 
 public class User
@@ -9,4 +11,7 @@ public class User
     public DateTime CreatedAt { get; set; }
 
     public List<int> ChatsId { get; set; } = new List<int>();
+
+    [NotMapped]
+    public byte[] Bytes { get; set; }
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using DotNetMessenger.Application.Commands;
+using DotNetMessenger.Domain.Entities;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -16,12 +17,14 @@ public class ChatsController(ISender sender) : ControllerBase
 
     [HttpPost("CreateChat")]
     public async Task<IActionResult> CreateChat([FromBody] CreateChatRequest request, CancellationToken cancellationToken)
-        => Ok(await sender.Send(new CreateChatCommand(request.SessionKey, request.Name)));
+        => Ok(await sender.Send(new CreateChatCommand(request.SessionKey, request.TargetUsername)));
 
     [HttpPost("SendMessage")]
-    
+    public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest request, CancellationToken cancellationToken)
+        => Ok(await sender.Send(new SendMessangeCommand(request.SessionKey, request.Message)));
 }
 
 public record GetChatsRequest(string SessionKey);
 public record GetChatRequest(string SessionKey, int Id);
-public record CreateChatRequest(string SessionKey, string Name);
+public record CreateChatRequest(string SessionKey, string TargetUsername);
+public record SendMessageRequest(string SessionKey, Message Message);

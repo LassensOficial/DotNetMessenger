@@ -1,19 +1,67 @@
 @page "/chats"
-
 @inject HttpClient HttpClient
 
-<div class="chats-header">
-    <h2>@(Notification != null ? Notification : string.Empty)</h2>
-    <button class="action-btn" @onclick="NewChat">Новый чат!</button>
+<div class="chats-page-container">
+
+    <div class="chats-header">
+        <h2>@(Notification != null ? Notification : string.Empty)</h2>
+        <!-- Кнопка теперь открывает панель -->
+        <button class="action-btn" @onclick="TogglePanel">Новый чат</button>
+    </div>
+
+    <div class="chats">
+        @foreach (ChatDto chat in CurrentUser.Chats)
+        {
+            <button class="chat_btn" @onclick="() => RedirectToChat(chat.Id)">
+                <div class="chat">
+                    @GetChatName(chat.UserNameInChat, CurrentUser.CurrentUser.UserName)
+                </div>
+            </button>
+        }
+    </div>
+
+    <!-- Затемняющий фон (Overlay) при открытой панели -->
+    @if (IsPanelOpen)
+    {
+        <div class="overlay" @onclick="TogglePanel"></div>
+    }
+
+    <!-- Выезжающая панель -->
+    <div class="side-panel @(IsPanelOpen ? "open" : "")">
+        <div class="panel-header">
+            <h3>Новый чат</h3>
+            <button class="close-btn" @onclick="TogglePanel">×</button>
+        </div>
+
+        <div class="panel-content">
+            <div class="form-group">
+                <label for="username">Имя собеседника:</label>
+                <!-- Биндинг введенного имени -->
+                <input type="text" id="username" @bind="TargetUsername" placeholder="Введите имя собеседника..."
+                       class="form-control" />
+            </div>
+
+            <button class="start-chat-btn" @onclick="StartNewChat">Начать чат</button>
+        </div>
+    </div>
+
 </div>
 
-<div class="chats">
-    @foreach (ChatDto chat in CurrentUser.Chats)
-    {
-        <button class="chat_btn" @onclick="() => RedirectToChat(chat.Id)">
-            <div class="chat">
-                @GetChatName(chat.UserNameInChat, CurrentUser.CurrentUser.UserName)
-            </div>
-        </button>
+<style>
+    /* 
+       ВАЖНО: Убираем ТОЛЬКО внутренние отступы рабочей зоны (padding), 
+       чтобы список чатов прижимался к краям. 
+       Сам MainLayout (шапки, меню) мы здесь НЕ трогаем и НЕ скрываем!
+    */
+    .page main .content,
+    main article.content {
+        padding: 0 !important;
+        max-width: 100% !important;
+        height: 100% !important;
     }
-</div>
+
+    /* Отключаем внешний скролл самого окна, чтобы прокручивался только список чатов */
+    main {
+        overflow: hidden !important;
+    }
+</style>

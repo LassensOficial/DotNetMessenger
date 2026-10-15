@@ -1,12 +1,32 @@
 ﻿@inherits LayoutComponentBase
+
+@inject User CurrentUser
+
 <div class="page">
-    <div class="sidebar">
+    <!-- ВЕРХНЯЯ МОБИЛЬНАЯ ШАПКА (Видна только на телефонах) -->
+    <div class="mobile-header">
+        <span class="mobile-brand">DotNetMessenger</span>
+        <button class="mobile-burger" @onclick="ToggleNavMenu">
+            <!-- Иконка бургера (3 полоски) -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+    </div>
+
+    <!-- 
+        БОКОВАЯ ПАНЕЛЬ С КНОПКАМИ. 
+        Класс 'mobile-collapse' применится только на мобилках, сохраняя меню на ПК!
+     Leyout на ноутбуках больше не пропадет.
+    -->
+    <div class="sidebar @(collapseNavMenu ? "mobile-collapse" : "mobile-show")">
         <NavMenu />
     </div>
 
+    <!-- ОСНОВНАЯ ЗОНА -->
     <main>
+        <!-- БЕЛАЯ ПЛАШКА С ИМЕНЕМ И ID -->
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            <span style="color: #444; font-weight: 500;">Имя: @(CurrentUser.CurrentUser == null ? string.Empty : CurrentUser.CurrentUser.UserName), ID: @(
+                CurrentUser.CurrentUser == null ? string.Empty : CurrentUser.CurrentUser.Id)</span>
         </div>
 
         <article class="content px-4">
@@ -14,3 +34,12 @@
         </article>
     </main>
 </div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

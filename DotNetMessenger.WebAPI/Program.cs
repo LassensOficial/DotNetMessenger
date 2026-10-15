@@ -30,6 +30,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ISessionKeyCreate, SessionKey>();
 builder.Services.AddScoped<ISessionKeyRepository, SessionKeyRepository>();
 builder.Services.AddScoped<IChatsRepository, ChatsRepository>();
+builder.Services.AddScoped<IMessageRepository, SendMessageRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -40,6 +41,9 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(LoginUserCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(GetChatsUserCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetChatUserCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(SendMessangeCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreateChatCommand).Assembly);
     cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 

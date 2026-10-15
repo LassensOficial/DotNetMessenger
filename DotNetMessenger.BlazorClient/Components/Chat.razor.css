@@ -1,133 +1,183 @@
-/* Главный контейнер на всю доступную высоту экрана */
+/* ==========================================================================
+   1. ГЛАВНЫЙ КОНТЕЙНЕР ЧАТА
+   ========================================================================== */
 .chat-container {
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Занимает всю высоту экрана */
-    max-width: 800px; /* Ограничиваем по ширине, чтобы на ПК не было слишком широко */
+    
+    /* 
+       Вычитаем высоту верхней фиолетовой шапки + белой плашки About (~110px на ПК). 
+       Это предотвратит уползание поля ввода под экран и наложение на шапки.
+    */
+    height: calc(100vh - 110px); 
+    width: 100%;
+    
+    max-width: 800px; 
     margin: 0 auto;
     background-color: #f8f9fa;
     border-left: 1px solid #e0e0e0;
     border-right: 1px solid #e0e0e0;
+    box-sizing: border-box;
+    
+    /* Критично: гарантируем, что чат не налезет поверх бокового меню Blazor */
+    position: relative;
+    z-index: 1; 
 }
 
-/* Шапка чата */
+/* Шапка чата — жестко сверху внутри рабочей области */
 .chat-header {
-    padding: 15px 20px;
+    flex-shrink: 0;
+    padding: 12px 20px;
     background-color: #ffffff;
     border-bottom: 1px solid #e0e0e0;
     box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
-.chat-header-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+.chat-header-info { 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
 }
 
-.chat-header h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 600;
+.chat-header h3 { 
+    margin: 0; 
+    font-size: 1.1rem; 
+    font-weight: 600; 
+    color: #333333;
 }
 
-.status {
-    font-size: 0.8rem;
-    color: #28a745;
+.status { 
+    font-size: 0.8rem; 
+    color: #28a745; 
 }
 
-.mock-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #e0e0e0;
+.mock-avatar { 
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%; 
+    background-color: #e0e0e0; 
+    flex-shrink: 0;
 }
 
-/* Зона сообщений с автоматическим скроллом */
+/* ==========================================================================
+   2. ЗОНА СООБЩЕНИЙ С СОБСТВЕННЫМ СКРОЛЛОМ
+   ========================================================================== */
 .chat-messages {
-    flex: 1; /* Занимает все свободное пространство между шапкой и вводом */
-    overflow-y: auto; /* Появляется скролл, если сообщений много */
+    flex: 1;
+    overflow-y: auto;
     padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-/* Общие стили для облаков сообщений */
-.message {
-    display: flex;
-    width: 100%;
+/* Стили карточек сообщений */
+.message { 
+    display: flex; 
+    width: 100%; 
 }
 
-.message-content {
-    max-width: 70%;
-    padding: 10px 16px;
-    border-radius: 18px;
-    font-size: 0.95rem;
-    line-height: 1.4;
-    word-break: break-word;
+.message-content { 
+    max-width: 70%; 
+    padding: 10px 16px; 
+    border-radius: 18px; 
+    font-size: 0.95rem; 
+    line-height: 1.4; 
+    word-break: break-word; 
 }
 
-/* Входящие сообщения (слева, серые) */
-.message.incoming {
-    justify-content: flex-start;
-}
-.message.incoming .message-content {
-    background-color: #ffffff;
-    color: #333333;
-    border-bottom-left-radius: 4px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+/* Входящие (Слева) */
+.message.incoming { 
+    justify-content: flex-start; 
 }
 
-/* Исходящие сообщения (справа, синие) */
-.message.outgoing {
-    justify-content: flex-end;
-}
-.message.outgoing .message-content {
-    background-color: #007bff;
-    color: #ffffff;
-    border-bottom-right-radius: 4px;
+.message.incoming .message-content { 
+    background-color: #ffffff; 
+    color: #333333; 
+    border-bottom-left-radius: 4px; 
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05); 
 }
 
-/* Нижняя зона ввода */
+/* Исходящие (Справа) */
+.message.outgoing { 
+    justify-content: flex-end; 
+}
+
+.message.outgoing .message-content { 
+    background-color: #007bff; 
+    color: #ffffff; 
+    border-bottom-right-radius: 4px; 
+}
+
+/* ==========================================================================
+   3. НИЖНЯЯ ПАНЕЛЬ ВВОДА
+   ========================================================================== */
 .chat-input-zone {
+    flex-shrink: 0;
     padding: 15px 20px;
     background-color: #ffffff;
     border-top: 1px solid #e0e0e0;
 }
 
-.input-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #f1f3f4;
-    padding: 6px 6px 6px 16px;
-    border-radius: 24px;
+.input-wrapper { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    background-color: #f1f3f4; 
+    padding: 6px 6px 6px 16px; 
+    border-radius: 24px; 
 }
 
-.message-input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    outline: none;
-    font-size: 0.95rem;
-    padding: 8px 0;
+.message-input { 
+    flex: 1; 
+    border: none; 
+    background: transparent; 
+    outline: none; 
+    font-size: 0.95rem; 
+    padding: 8px 0; 
+    color: #333333;
 }
 
-/* Кнопка отправки */
-.send-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.2s;
+.send-btn { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    width: 36px; 
+    height: 36px; 
+    border-radius: 50%; 
+    border: none; 
+    background-color: #007bff; 
+    color: white; 
+    cursor: pointer; 
+    transition: background-color 0.2s; 
+    flex-shrink: 0;
 }
 
-.send-btn:hover {
-    background-color: #0056b3;
+.send-btn:hover { 
+    background-color: #0056b3; 
+}
+
+/* ==========================================================================
+   4. АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ (Экраны меньше 768px)
+   ========================================================================== */
+@media (max-width: 767.98px) {
+    .chat-container {
+        /* Высота строго под оставшееся под фиолетовой шапкой и плашкой место */
+        height: calc(100vh - 110px);
+        
+        border-left: none;
+        border-right: none;
+        max-width: 100%;
+    }
+
+    .chat-header {
+        /* Немного сжимаем шапку на мобилках, чтобы выбить пространство под сообщения */
+        padding: 10px 16px;
+    }
+
+    .chat-input-zone {
+        /* Защита от нижних экранных полосок на современных смартфонах */
+        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+        padding-top: 12px;
+    }
 }

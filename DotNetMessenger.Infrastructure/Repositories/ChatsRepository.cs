@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 public class ChatsRepository(ApplicationDbContext db) : IChatsRepository
 {
-
     public async Task<List<Chat>> GetChats(string key)
     {
         // List<int> chatsId = new List<int>();
@@ -58,12 +57,27 @@ public class ChatsRepository(ApplicationDbContext db) : IChatsRepository
 
     public async Task<Chat> GetChat(int id)
     {
-        return await db.Chats.Where(c => c.Id == id).FirstOrDefaultAsync();
+        Chat chat = await db.Chats.Where(c => c.Id == id).FirstOrDefaultAsync();
+
+        List<Message> messages = await db.Messages.Where(m => m.ChatId == chat.Id).ToListAsync();
+
+        foreach (var message in messages)
+        {
+            chat.Messages.Add(message);
+        }
+
+        return chat;
     }
 
     public async Task AddAsync(Chat chat)
     {
         await db.Chats.AddAsync(chat);
         await db.SaveChangesAsync();
+    }
+
+    public async Task<bool> ExistsByUserNames(List<string> userNamesInChat)
+    {
+        userNamesInChat.Sort();
+        return await db.Chats.AnyAsync(c => c.UserNameInChat == userNamesInChat);
     }
 }
